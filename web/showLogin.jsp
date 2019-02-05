@@ -21,6 +21,8 @@
             <input id="password" type="password" name="password">
             <br>
             <input id="btnEnter" type="submit" value="Войти">
+            <br><br>
+            <a id="showRegistration" href="showRegistration">Зарегистрироваться</a>
         </form>
     </body>
 </html>

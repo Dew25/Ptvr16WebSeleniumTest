@@ -37,8 +37,9 @@ public class SeleniumTest {
     }
     
     
-    @AfterClass // Выполняется один раз после выплнения теста
-    public static void tearDownClass() {
+    @AfterClass // Запускается один раз после выплнения теста
+    public static void tearDownClass() throws InterruptedException {
+        Thread.sleep(3000);
         driver.quit();
         
     }
@@ -56,13 +57,71 @@ public class SeleniumTest {
      public void loginTest() {
          WebElement el = driver.findElement(By.id("showLogin"));
          el.click();
+         el = driver.findElement(By.id("showRegistration"));
+         el.click();
+            registration();
+         el = driver.findElement(By.id("showLogin"));
+         el.click();
          el = driver.findElement(By.id("login"));
-         el.sendKeys("admin");
+         el.sendKeys("TestLogin");
          el = driver.findElement(By.id("password"));
-         el.sendKeys("admin");
+         el.sendKeys("TestPassword");
          el = driver.findElement(By.id("btnEnter"));
          el.click();
          el = driver.findElement(By.id("info"));
-         assertEquals("Вы вошли", el.getText());
+         assertEquals("Привет TestName, Вы вошли", el.getText());
+         el = driver.findElement(By.id("logout"));
+         el.click();
+         el = driver.findElement(By.id("info"));
+         assertEquals("Вы вышли", el.getText());
+         deleteUser();
      }
+     
+     public void registration() {
+         WebElement el = driver.findElement(By.name("name"));
+         el.sendKeys("TestName");
+         el= driver.findElement(By.name("surname"));
+         el.sendKeys("TestSurname");
+         el= driver.findElement(By.name("email"));
+         el.sendKeys("TestEmail");
+         el= driver.findElement(By.name("login"));
+         el.sendKeys("TestLogin");
+         el= driver.findElement(By.name("password1"));
+         el.sendKeys("TestPassword");
+         el= driver.findElement(By.name("password2"));
+         el.sendKeys("TestPassword");
+         el= driver.findElement(By.id("btnReg"));
+         el.click();
+     }
+     @Test
+     public void addNewBookTest() {
+         WebElement el = driver.findElement(By.id("showAddNewBook"));
+         el.click();
+         el = driver.findElement(By.name("name"));
+         el.sendKeys("TestBoook");
+         el = driver.findElement(By.name("author"));
+         el.sendKeys("TestAuthor");
+         el = driver.findElement(By.name("isbn"));
+         el.sendKeys("TestIsbn");
+         el = driver.findElement(By.name("count"));
+         el.sendKeys("10");
+         el = driver.findElement(By.id("btnAdd"));
+         el.click();
+         el = driver.findElement(By.id("info"));
+         assertEquals("Новая книга добавлена", el.getText());
+         deleteBook();
+     }
+     public void deleteBook() {
+         WebElement el = driver.findElement(By.id("deleteBook"));
+         el.click();
+         el = driver.findElement(By.id("info"));
+         assertEquals("тестовая книга удалена", el.getText());
+     }
+     public void deleteUser() {
+         WebElement el = driver.findElement(By.id("deleteUser"));
+         el.click();
+         el = driver.findElement(By.id("info"));
+         assertEquals("тестовый пользователь удален", el.getText());
+     }
+     
 }

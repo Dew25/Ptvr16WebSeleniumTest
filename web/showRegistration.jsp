@@ -33,7 +33,7 @@
             Повторите пароль:<br>
             <input type="text" name="password2"><br>
             <br>
-            <input type="submit" value="Зарегистрироваться">
+            <input id="btnReg" type="submit" value="Зарегистрироваться">
         </form>
     </body>
 </html>
