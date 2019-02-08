@@ -60,6 +60,8 @@ public class Controller extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
+        User regUser = null;
+        HttpSession session = request.getSession(false);
         String path = request.getServletPath();
         if(path != null)
             switch (path) {
@@ -69,18 +71,18 @@ public class Controller extends HttpServlet {
                 case "/login":
                     String login = request.getParameter("login");
                     String password = request.getParameter("password");
-                    User regUser = userFacade.findByLogin(login);
+                    regUser = userFacade.findByLogin(login);
                     if(regUser == null){
                        request.setAttribute("info", "Нет такого пользователя");
-                       request.getRequestDispatcher("/showRegistration.jsp").forward(request, response); 
+                       request.getRequestDispatcher("/index.jsp").forward(request, response); 
                     }
                     String encriptPass = setEncriptPass(password,"");
                     
                     if(encriptPass != null && !encriptPass.equals(regUser.getPassword())){
                        request.setAttribute("info", "Нет такого пользователя");
-                       request.getRequestDispatcher("/showRegistration.jsp").forward(request, response); 
+                       request.getRequestDispatcher("/index.jsp").forward(request, response); 
                     }
-                    HttpSession session = request.getSession(true);
+                    session = request.getSession(true);
                     session.setAttribute("regUser", regUser);
                     request.setAttribute("info", "Привет "+regUser.getReader().getName()+", Вы вошли");
                     request.getRequestDispatcher("/index.jsp").forward(request, response);
@@ -114,12 +116,30 @@ public class Controller extends HttpServlet {
                     request.getRequestDispatcher("/showAddNewBook.jsp").forward(request, response);
                     break;
                 case "/deleteBook":
+                    if(session == null){
+                        request.getRequestDispatcher("/showLogin").forward(request, response);
+                        break;
+                    }
+                    regUser = (User) session.getAttribute("regUser");
+                    if(regUser == null){
+                        request.getRequestDispatcher("/showLogin").forward(request, response);
+                        break;
+                    }
                     Book book = bookFacade.findByIsbn("TestIsbn");
                     bookFacade.remove(book);
                     request.setAttribute("info", "тестовая книга удалена");
                     request.getRequestDispatcher("/index.jsp").forward(request, response);
                     break;    
                 case "/deleteUser":
+                    if(session == null){
+                        request.getRequestDispatcher("/showLogin").forward(request, response);
+                        break;
+                    }
+                    regUser = (User) session.getAttribute("regUser");
+                    if(regUser == null){
+                        request.getRequestDispatcher("/showLogin").forward(request, response);
+                        break;
+                    }
                     user = userFacade.findByLogin("TestLogin");
                     reader = user.getReader();
                     userFacade.remove(user);
@@ -128,6 +148,15 @@ public class Controller extends HttpServlet {
                     request.getRequestDispatcher("/index.jsp").forward(request, response);
                     break;  
                 case "/addBook":
+                    if(session == null){
+                        request.getRequestDispatcher("/showLogin").forward(request, response);
+                        break;
+                    }
+                    regUser = (User) session.getAttribute("regUser");
+                    if(regUser == null){
+                        request.getRequestDispatcher("/showLogin").forward(request, response);
+                        break;
+                    }
                     name = request.getParameter("name");
                     String author = request.getParameter("author");
                     String isbn = request.getParameter("isbn");

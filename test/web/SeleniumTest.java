@@ -52,15 +52,9 @@ public class SeleniumTest {
     public void tearDown() {
     }
 
-    
-     @Test
-     public void loginTest() {
-         WebElement el = driver.findElement(By.id("showLogin"));
-         el.click();
-         el = driver.findElement(By.id("showRegistration"));
-         el.click();
-            registration();
-         el = driver.findElement(By.id("showLogin"));
+    public void enterTest(){
+        System.out.println("Вход");
+        WebElement el = driver.findElement(By.id("showLogin"));
          el.click();
          el = driver.findElement(By.id("login"));
          el.sendKeys("TestLogin");
@@ -68,16 +62,35 @@ public class SeleniumTest {
          el.sendKeys("TestPassword");
          el = driver.findElement(By.id("btnEnter"));
          el.click();
+    }
+     @Test
+     public void loginTest() {
+         WebElement el = driver.findElement(By.id("showLogin"));
+         el.click();
+         el = driver.findElement(By.id("showRegistration"));
+         el.click();
+            registration();
+            enterTest();
          el = driver.findElement(By.id("info"));
          assertEquals("Привет TestName, Вы вошли", el.getText());
+         System.out.println("Вход произведен");
+         addNewBookTest();
+         deleteUser();
+         System.out.println("Выход");
          el = driver.findElement(By.id("logout"));
          el.click();
          el = driver.findElement(By.id("info"));
          assertEquals("Вы вышли", el.getText());
-         deleteUser();
+         System.out.println("Выход произведен");
+         System.out.println("Проверка входа");
+         enterTest();
+         el = driver.findElement(By.id("info"));
+         assertEquals("Нет такого пользователя", el.getText());
+         System.out.println("Неудачный вход");
      }
      
      public void registration() {
+         System.out.println("Начало регистрации");
          WebElement el = driver.findElement(By.name("name"));
          el.sendKeys("TestName");
          el= driver.findElement(By.name("surname"));
@@ -92,9 +105,11 @@ public class SeleniumTest {
          el.sendKeys("TestPassword");
          el= driver.findElement(By.id("btnReg"));
          el.click();
+         System.out.println("Регистрация закончена");
      }
-     @Test
+     
      public void addNewBookTest() {
+         System.out.println("Добавление тестовой книги");
          WebElement el = driver.findElement(By.id("showAddNewBook"));
          el.click();
          el = driver.findElement(By.name("name"));
@@ -109,19 +124,25 @@ public class SeleniumTest {
          el.click();
          el = driver.findElement(By.id("info"));
          assertEquals("Новая книга добавлена", el.getText());
+         System.out.println("Книга добавлена");
          deleteBook();
+         
      }
      public void deleteBook() {
+         System.out.println("Удаление книги");
          WebElement el = driver.findElement(By.id("deleteBook"));
          el.click();
          el = driver.findElement(By.id("info"));
          assertEquals("тестовая книга удалена", el.getText());
+         System.out.println("Книга удалена");
      }
      public void deleteUser() {
+         System.out.println("Удаление пользователя");
          WebElement el = driver.findElement(By.id("deleteUser"));
          el.click();
          el = driver.findElement(By.id("info"));
          assertEquals("тестовый пользователь удален", el.getText());
+         System.out.println("Пользователь удален");
      }
      
 }
