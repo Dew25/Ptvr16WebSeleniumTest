@@ -64,18 +64,14 @@ public class SeleniumTest {
          el.click();
     }
      @Test
-     public void loginTest() {
-         WebElement el = driver.findElement(By.id("showLogin"));
-         el.click();
-         el = driver.findElement(By.id("showRegistration"));
-         el.click();
+     public void webAppTest() {
             registration();
             enterTest();
-         el = driver.findElement(By.id("info"));
+         WebElement el = driver.findElement(By.id("info"));
          assertEquals("Привет TestName, Вы вошли", el.getText());
          System.out.println("Вход произведен");
-         addNewBookTest();
-         deleteUser();
+            addNewBookTest();
+             deleteUser();
          System.out.println("Выход");
          el = driver.findElement(By.id("logout"));
          el.click();
@@ -83,15 +79,19 @@ public class SeleniumTest {
          assertEquals("Вы вышли", el.getText());
          System.out.println("Выход произведен");
          System.out.println("Проверка входа");
-         enterTest();
+            enterTest();
          el = driver.findElement(By.id("info"));
          assertEquals("Нет такого пользователя", el.getText());
          System.out.println("Неудачный вход");
      }
      
      public void registration() {
+         WebElement el = driver.findElement(By.id("showLogin"));
+         el.click();
+         el = driver.findElement(By.id("showRegistration"));
+         el.click();
          System.out.println("Начало регистрации");
-         WebElement el = driver.findElement(By.name("name"));
+         el = driver.findElement(By.name("name"));
          el.sendKeys("TestName");
          el= driver.findElement(By.name("surname"));
          el.sendKeys("TestSurname");
